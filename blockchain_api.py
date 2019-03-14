@@ -19,7 +19,8 @@ def mine():
 		'id': block['id'], 
 		'proof': block['proof'], 
 		'transactions': block['transactions'], 
-		'prev_hash': block['prev_hash']}), 200
+		'prev_hash': block['prev_hash']
+		}), 200
 
 @app.route('/chain', methods=['GET'])
 def show_chain():
@@ -43,8 +44,10 @@ def new_nodes():
 
 @app.route('/nodes/solve', methods=['GET'])
 def consensus():
-	return jsonify({'msg': 'Chain replaced!' if blockchain.consensus() else 'Authoritarian chain',
-	 'chain': blockchain.chain})
+	return jsonify({
+		'msg': 'Chain replaced!' if blockchain.consensus() else 'Authoritarian chain',
+		 'chain': blockchain.chain
+	 })
 
 if __name__ == '__main__':
 	port = int(input("Type port number: "))

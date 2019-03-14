@@ -17,7 +17,8 @@ class Blockchain:
 		 'timestamp': ctime(),
 		 'proof': proof or self.validate_proof(),
 		 'prev_hash': prev_hash or self.hash(self.last_block),
-		 'transactions': self.cur_transactions}
+		 'transactions': self.cur_transactions
+		 }
 		self.chain.append(block)
 		#self.cur_transactions = []
 		return block
@@ -33,7 +34,7 @@ class Blockchain:
 	def new_node(self, addr):
 		self.nodes.add(urlparse(addr).netloc) #needs to begin with http://...
 
-	def valid_chain(self, chain):
+	def validate_chain(self, chain):
 		last_block = chain[0]
 		for block in chain:
 			if block['prev_hash'] != self.hash(last_block):
@@ -42,12 +43,16 @@ class Blockchain:
 		return True
 
 	def consensus(self):
+		new_chain = None
 		max_len = len(self.chain)
 		for node in self.nodes:
 			response = get(f'http://{node}/chain')
-			if response.ok:
-				if self.valid_chain(response.json()) and len(response) > max_len:
-					self.chain = response.json()
+			if response.ok and len(response.json()) > max_len: #and self.validate_chain(response.json()):
+				new_chain = response.json()
+				max_len = len(response.json())
+		if new_chain:
+			self.chain = new_chain
+			return True
 		return False
 
 	@staticmethod
