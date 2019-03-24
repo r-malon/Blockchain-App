@@ -1,0 +1,41 @@
+body, html{
+	height: 100%;
+	margin: 0;
+	font-family: sans-serif;
+}
+table, th, td{
+	border: 3px solid orange;
+	border-collapse: collapse;
+	padding: 10px;
+	text-align: center;
+	margin: 0 auto;
+}
+th{
+	font-size: 26px;
+}
+tr:last-child{
+	background-color: lightgreen;
+}
+button{
+	width: 105px;
+	height: 75px;
+	border-radius: 20%;
+	background-color: #333;
+	border: none;
+	cursor: pointer;
+	box-shadow: 0 7px black;
+	transform: translate(-50%, -50%);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: 50px;
+	margin-bottom: 40px;
+}
+button:hover{
+	background-color: black;
+	box-shadow: 0 5px #333;
+}
+button:active{
+	box-shadow: none;
+	/*margin-top: 5px;*/
+}

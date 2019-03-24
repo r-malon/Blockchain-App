@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Nodes</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/menubar.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/nodes.css') }}">
+</head>
+<body>
+	<ul id="menu">
+		<li><a href="#">Home</a></li>
+		<li><a href="#">Mine</a></li>
+		<li class="dropdown">
+			<a href="javascript:void(0)" class="dropdown">&middot;New&middot;</a>
+			<div class="cont">
+				<a href="#">Transaction</a>
+				<a href="#">Node</a>
+				<a href="#">Software</a>
+			</div>
+		</li>
+	</ul>
+	<br>
+	<form>
+		<input type="text" name="nodes" placeholder="Nodes Adresses: ">
+		<button>Add Node</button>
+	</form>
+	<ul id="node_list">
+		{% if not nodes %}
+		<li>There's no nodes...</li>
+		{% endif %}
+		{% for node in nodes %}
+		<li>{{ node }}</li>
+		{% endfor %}
+	</ul>
+</body>
+</html>

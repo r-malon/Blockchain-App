@@ -1,0 +1,58 @@
+#menu{
+	position: fixed;
+	padding: 0;
+	top: -20px;
+	width: 100%;
+	background-color: #333;
+}
+li{
+	display: inline;
+	float: left;
+}
+/*li:last-child{
+	float: right;
+	margin-right: 40px;
+}
+li:last-child a:hover{
+	color: yellow;
+}*/
+li a{
+	display: block;
+	padding: 12px;
+	margin: 0;
+	text-align: center;
+	color: white;
+	text-decoration: none;
+	font-size: 22px;
+	font-family: sans-serif;
+}
+li a:hover{
+	background-color: black;
+	color: lime;
+}
+.dropdown{
+	display: inline-block;
+}
+.cont{
+	display: none;
+	position: absolute;
+	box-shadow: 5px 7px 7px 5px rgba(0, 0, 0, 0.4);
+	background-color: gainsboro;
+	z-index: 1;
+	width: 150px;
+}
+.cont a{
+	text-decoration: none;
+	padding: 10px 2px;
+	display: block;
+	color: brown;
+}
+.cont a:hover{
+	background-color: lightgrey;
+	color: indigo;
+	font-size: 23px;
+}
+.dropdown:hover .cont{
+	display: block;
+	border-radius: 5px;
+}

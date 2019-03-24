@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Show Chain</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/show_chain.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/menubar.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/nightmode.css') }}">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+	<ul id="menu">
+		<li><a href="#">Home</a></li>
+		<li><a href="#">Mine</a></li>
+		<li class="dropdown">
+			<a href="javascript:void(0)" class="dropdown">&middot;New&middot;</a>
+			<div class="cont">
+				<a href="#">Transaction</a>
+				<a href="#">Node</a>
+				<a href="#">Software</a>
+			</div>
+		</li>
+		<li>
+			<a href="javascript:void(0)" id="nightmode">
+				<i class="fas fa-lightbulb"></i>
+			</a>
+		</li>
+	</ul>
+	<br>
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Timestamp</th>
+			<th>Proof of Work</th>
+			<th>Previous Hash</th>
+		</tr>
+		{% for block in chain %}
+		<tr>
+			<td>{{block["id"]}}</td>
+			<td>{{block["timestamp"]}}</td>
+			<td>{{block["proof"]}}</td>
+			<td>{{block["prev_hash"]}}</td>
+		</tr>
+		{% endfor %}
+	</table>
+	<hr>
+	<div style="position: relative;">
+		<button onclick="window.location='/mine';">
+			<span style="color: silver;font-size: 28px;">Mine</span>
+		</button>
+	</div>
+</body>
+</html>

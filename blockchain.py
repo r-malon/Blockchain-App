@@ -1,5 +1,5 @@
 from hashlib import sha256
-import json
+from json import dumps
 from time import ctime
 from urllib.parse import urlparse
 from requests import get
@@ -9,7 +9,7 @@ class Blockchain:
 		self.chain = []
 		self.cur_transactions = []
 		self.nodes = set()
-		self.new_block('abcde', 1)
+		self.new_block(1, 1)
 
 	def new_block(self, proof=None, prev_hash=None):
 		block = {
@@ -20,7 +20,7 @@ class Blockchain:
 		 'transactions': self.cur_transactions
 		 }
 		self.chain.append(block)
-		#self.cur_transactions = []
+		self.cur_transactions = []
 		return block
 
 	def new_transaction(self, sender, recipient, amount):
@@ -36,7 +36,7 @@ class Blockchain:
 
 	def validate_chain(self, chain):
 		last_block = chain[0]
-		for block in chain:
+		for block in chain[1:len(chain)]:
 			if block['prev_hash'] != self.hash(last_block):
 				return False
 			last_block = block
@@ -46,8 +46,8 @@ class Blockchain:
 		new_chain = None
 		max_len = len(self.chain)
 		for node in self.nodes:
-			response = get(f'http://{node}/chain')
-			if response.ok and len(response.json()) > max_len: #and self.validate_chain(response.json()):
+			response = get(f'http://{node}/chain', headers={'Content-Type': 'application/json'})
+			if response.ok and len(response.json()) > max_len and self.validate_chain(response.json()):
 				new_chain = response.json()
 				max_len = len(response.json())
 		if new_chain:
@@ -57,7 +57,7 @@ class Blockchain:
 
 	@staticmethod
 	def hash(block):
-		return sha256(json.dumps(block, sort_keys=True).encode()).hexdigest()
+		return sha256(dumps(block, sort_keys=True).encode()).hexdigest()
 
 	@property
 	def last_block(self):
@@ -66,7 +66,7 @@ class Blockchain:
 	def validate_proof(self):
 		proof = 0
 		while True:
-			if self.hash(f"{self.last_block['proof']}{proof}")[:5] == 'abcde':
+			if self.hash(f"{self.last_block['proof']}{proof}")[:1] == 'a':
 				return proof
 			proof += 1
 
@@ -74,3 +74,4 @@ if __name__ == '__main__':
 	x = Blockchain()
 	for i in range(40):
 		print(x.new_block())
+	print(x.validate_chain(x.chain))

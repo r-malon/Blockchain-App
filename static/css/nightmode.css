@@ -1,0 +1,19 @@
+body{
+	animation: today 1s;
+}
+@keyframes tonight{
+	from{
+		background-color: #d6d6d6;
+	}
+	to{
+		background-color: #2e2e2e;
+	}
+}
+@keyframes today{
+	from{
+		background-color: #2e2e2e;
+	}
+	to{
+		background-color: #d6d6d6;
+	}
+}

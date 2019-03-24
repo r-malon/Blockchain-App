@@ -1,9 +1,9 @@
-from flask import Flask, jsonify, request
-import json
+from flask import Flask, jsonify, request, render_template, redirect
 from uuid import uuid1
-from blockchain_test import Blockchain
+from blockchain import Blockchain
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 blockchain = Blockchain()
 node_id = str(uuid1())
 
@@ -15,16 +15,17 @@ def mine():
 		amount=1
 	)
 	block = blockchain.new_block()
-	return jsonify({
-		'id': block['id'], 
-		'proof': block['proof'], 
-		'transactions': block['transactions'], 
-		'prev_hash': block['prev_hash']
-		}), 200
+	return redirect('/chain'), 200
 
 @app.route('/chain', methods=['GET'])
 def show_chain():
-	return jsonify(blockchain.chain), 200
+	try:
+		if request.headers['Content-Type'] == 'application/json':
+			return jsonify(blockchain.chain)
+		else:
+			raise KeyError
+	except KeyError:
+		return render_template('show_chain.html', chain=blockchain.chain)
 
 @app.route('/trans/new', methods=['POST'])
 def new_trans():
@@ -35,12 +36,15 @@ def new_trans():
 		values['amount'])
 	return jsonify({'msg': f'Transaction at index {index}'}), 200
 
-@app.route('/nodes/new', methods=['POST'])
+@app.route('/nodes/new', methods=['GET'])
 def new_nodes():
-	values = request.get_json()
-	for node in values['nodes']:
-		blockchain.new_node(node)
-	return jsonify({'msg': 'New nodes!', 'nodes': list(blockchain.nodes)}), 200
+	try:
+		values = request.args.get('nodes')
+		for node in values.split(','):
+			blockchain.new_node(node)
+	except AttributeError:
+		return render_template('nodes.html', nodes=list(blockchain.nodes)), 200	
+	return render_template('nodes.html', nodes=list(blockchain.nodes)), 200
 
 @app.route('/nodes/solve', methods=['GET'])
 def consensus():
@@ -50,5 +54,5 @@ def consensus():
 	 })
 
 if __name__ == '__main__':
-	port = int(input("Type port number: "))
-	app.run(host='0.0.0.0', port=port)
+	#port = int(input("Type port number: "))
+	app.run(host='0.0.0.0', debug=True)
