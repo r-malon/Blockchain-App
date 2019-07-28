@@ -32,7 +32,9 @@ class Blockchain:
 		return self.last_block['id']
 
 	def new_node(self, addr):
-		self.nodes.add(urlparse(addr).netloc) #needs to begin with http://...
+		parsed = urlparse(addr).netloc
+		if parsed != '':
+			self.nodes.add(parsed)
 
 	def validate_chain(self, chain):
 		last_block = chain[0]

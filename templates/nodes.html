@@ -22,15 +22,18 @@
 	</ul>
 	<br>
 	<form>
+		<p>Adress needs to begin with http://</p>
+		<br>
 		<input type="text" name="nodes" placeholder="Nodes Adresses: ">
 		<button>Add Node</button>
 	</form>
 	<ul id="node_list">
+		{% for node in nodes %}
 		{% if not nodes %}
 		<li>There's no nodes...</li>
-		{% endif %}
-		{% for node in nodes %}
+		{% else %}
 		<li>{{ node }}</li>
+		{% endif %}
 		{% endfor %}
 	</ul>
 </body>

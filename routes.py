@@ -42,9 +42,10 @@ def new_nodes():
 		values = request.args.get('nodes')
 		for node in values.split(','):
 			blockchain.new_node(node)
+		raise AttributeError
 	except AttributeError:
-		return render_template('nodes.html', nodes=list(blockchain.nodes)), 200	
-	return render_template('nodes.html', nodes=list(blockchain.nodes)), 200
+		print(list(blockchain.nodes))
+		return render_template('nodes.html', nodes=list(blockchain.nodes)), 200
 
 @app.route('/nodes/solve', methods=['GET'])
 def consensus():
