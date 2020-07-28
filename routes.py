@@ -7,11 +7,12 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 blockchain = Blockchain()
 node_id = str(uuid1())
 
+
 @app.route('/mine', methods=['GET'])
 def mine():
 	blockchain.new_transaction(
-		sender="0",
-		recipient=node_id,
+		sender="0", 
+		recipient=node_id, 
 		amount=1
 	)
 	block = blockchain.new_block()
@@ -33,7 +34,8 @@ def new_trans():
 	index = blockchain.new_transaction(
 		values['sender'], 
 		values['recipient'], 
-		values['amount'])
+		values['amount']
+	)
 	return jsonify({'msg': f'Transaction at index {index}'}), 200
 
 @app.route('/nodes/new', methods=['GET'])
@@ -44,16 +46,16 @@ def new_nodes():
 			blockchain.new_node(node)
 		raise AttributeError
 	except AttributeError:
-		print(list(blockchain.nodes))
+		# print(list(blockchain.nodes))
 		return render_template('nodes.html', nodes=list(blockchain.nodes)), 200
 
 @app.route('/nodes/solve', methods=['GET'])
 def consensus():
 	return jsonify({
-		'msg': 'Chain replaced!' if blockchain.consensus() else 'Authoritarian chain',
-		 'chain': blockchain.chain
-	 })
+		'msg': 'Chain replaced!' if blockchain.consensus() else 'Authoritarian chain', 
+		'chain': blockchain.chain
+	})
+
 
 if __name__ == '__main__':
-	#port = int(input("Type port number: "))
 	app.run(host='0.0.0.0', debug=True)
